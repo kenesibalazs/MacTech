@@ -1,0 +1,23 @@
+{
+    "questions": [
+      {
+        "prompt": "Jhon wants to display hello world to terminal in C++. Help him.",
+        "code": "int main(){\n    ______<<\"Hello World\" << endl;\n}",
+        "options": ["cout", "cin", "printf", "scanf"],
+        "correctAnswer": "cout"
+      },
+      {
+        "prompt": "What is the correct syntax to read input in C++?",
+        "code": "int x;\n______(x);",
+        "options": ["cin >>", "scanf", "gets", "read"],
+        "correctAnswer": "cin >>"
+      },
+      {
+        "prompt": "How do you declare a variable in C++?",
+        "code": "______ int x;",
+        "options": ["int", "var", "variable", "init"],
+        "correctAnswer": "int"
+      }
+    ]
+  }
+  

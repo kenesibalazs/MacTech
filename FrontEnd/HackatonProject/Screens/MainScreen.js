@@ -2,15 +2,20 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import BasicGameLevelOne from './basicGameLevelOne'; 
+import BasicGameLevelOne from './basicGameLevelOne'; // Import the BasicGameLevelOne component
 
 export default function MainScreen({ route }) {
     const { username } = route.params;
+
     const firstLetter = username.charAt(0).toUpperCase();
     const navigation = useNavigation();
     const [showGames, setShowGames] = useState(false); 
 
     const gamesList = ["Basics", "Sorting Game", "Objects"]; 
+
+    // Define custom answer array and correct answer for BasicGameLevelOne
+    const basicGameAnswers = ["cout", "cin", "printf", "scanf"];
+    const basicGameCorrectAnswer = "cout";
 
     return (
         <View style={styles.container}>
@@ -34,7 +39,11 @@ export default function MainScreen({ route }) {
                         {gamesList.map((game, index) => (
                             <Pressable key={index} style={styles.gameButton} onPress={() =>{
                                 if (game === "Basics") {
-                                    navigation.navigate('BasicGameLevelOne');
+                                    // Pass custom answer array and correct answer to BasicGameLevelOne
+                                    navigation.navigate('BasicGameLevelOne', {
+                                        answerArray: basicGameAnswers,
+                                        correctAnswer: basicGameCorrectAnswer
+                                    });
                                 }
                                 else if (game === "Sorting Game") {
                                     alert("Sorry, this game is not available yet");

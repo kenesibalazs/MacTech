@@ -1,43 +1,64 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
-
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import LoginButton from '../costumElements/loginButton';
+import { FIREBASE_AUTH } from '../FirebaseConfig';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+
 export default function LoginScreen({ navigation }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
 
-    const handleLogin = () => {
-        if (username === 'admin' && password === 'password') {
+    const auth = FIREBASE_AUTH;
+
+    const signIn = async () => {
+        setLoading(true);
+        try {
+            const response = await signInWithEmailAndPassword(auth, username, password);
+            console.log(response);
             navigation.navigate('MainScreen', { username: username });
-        } else {
+        } catch (error) {
+            console.log(error);
             Alert.alert('Invalid credentials', 'Please check your username and password');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const signUp = async () => {
+        setLoading(true);
+        try {
+            const response = await createUserWithEmailAndPassword(auth, username, password);
+            const user = response.user;
+            navigation.navigate('MainScreen', { username: username });
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Invalid credentials', 'Please check your username and password');
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <View style={styles.container}>
             <Text style={styles.titleLabel}>Welcome</Text>
-            <TextInput 
-                placeholder='Username' 
-                style={styles.textField} 
-                placeholderTextColor='white' 
+            <TextInput
+                placeholder='Username'
+                style={styles.textField}
+                placeholderTextColor='white'
                 onChangeText={text => setUsername(text)}
                 value={username}
             />
-            <TextInput 
-                placeholder='Password' 
-                style={styles.textField} 
-                placeholderTextColor='white' 
+            <TextInput
+                placeholder='Password'
+                style={styles.textField}
+                placeholderTextColor='white'
                 onChangeText={text => setPassword(text)}
-                secureTextEntry={true} 
+                secureTextEntry={true}
                 value={password}
             />
-            {/* <Text style={{color: 'white', fontSize: 16, marginTop: 20}}>Don't have an account? <Button title='Sign Up' onPress={() => navigation.navigate('SignUp')} /></Text> */}
-            
-            <LoginButton title='Login' onPress={handleLogin} backgroundColor='#0096c7'/>
-            <LoginButton title='Login As Guest' onPress={() => navigation.navigate('MainScreen', { username: 'Guest' })} backgroundColor='#48cae4'/>
-           
-            
+            <LoginButton title='Login' onPress={signIn} backgroundColor='#48cae4' />
+            <LoginButton title='Create Account' onPress={signUp} backgroundColor='#0096c7' />
         </View>
     );
 }
