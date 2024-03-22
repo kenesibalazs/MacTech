@@ -6,6 +6,7 @@ import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 
 import LoginScreen from './Screens/LoginScreen';
 import MainScreen from './Screens/MainScreen';
+import BasicGameLevelOne from './Screens/basicGameLevelOne';
 
 const Stack = createStackNavigator();
 
@@ -15,7 +16,9 @@ export default function App() {
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Login" component={LoginScreen}  />
         <Stack.Screen name="MainScreen" component={MainScreen} />
+        <Stack.Screen name="BasicGameLevelOne" component={BasicGameLevelOne} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
+
