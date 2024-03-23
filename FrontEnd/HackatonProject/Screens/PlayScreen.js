@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Button, TouchableOpacity, Pressable, Modal, Alert } from 'react-native';
-import { doc, getDoc, updateDoc, onSnapshot, collection } from 'firebase/firestore';
+import { StyleSheet, View, Text, Button, TouchableOpacity, Pressable, Modal, Alert, Image } from 'react-native';
+import { doc, getDoc, updateDoc, onSnapshot, collection, increment , setDoc} from 'firebase/firestore';
 import { FIREBASE_DB } from '../FirebaseConfig';
 import { DeviceMotion } from 'expo-sensors';
 import { useNavigation } from '@react-navigation/native';
@@ -8,6 +8,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import MainScreen from './MainScreen';
 import CountDown from 'react-native-countdown-component';
+import { async } from '@firebase/util';
 
 
 export default function PlayScreen({ route }) {
@@ -27,29 +28,47 @@ export default function PlayScreen({ route }) {
   const questions = [
     {
         prompt: "Jhon wants to display hello world to terminal in C++. Help him.",
-        code: "int main(){\n    ______<<\"Hello World\" << endl;\n}",
+        code: require("../assets/questionScreenShots/fel1.png"),
         options: ["cout", "cin", "printf", "scanf"],
         correctAnswer: "cout"
     },
     {
         prompt: "What is the correct syntax to read input in C++?",
-        code: "int x;\n______(x);",
+        code: require("../assets/questionScreenShots/fel2.png"),
         options: ["cin >>", "scanf", "gets", "read"],
         correctAnswer: "cin >>"
     },
     {
         prompt: "How do you declare a variable in C++?",
-        code: "______ int x;",
+        code: require("../assets/questionScreenShots/fel3.png"),
         options: ["int", "var", "variable", "init"],
         correctAnswer: "int"
     },
+
+    {
+      prompt: "4.What is the correct declaration in C++?",
+      code: require("../assets/questionScreenShots/fel4.png"),
+      options: ["int", "var", "double", "bool"],
+      correctAnswer: "double"
+    },
+
+    {
+      prompt: "5.Move the second sentence to a new line.",
+      code: require("../assets/questionScreenShots/fel5.png"),
+      options: ["cout", "new line", "endline", "endl"],
+      correctAnswer: "endl"
+    },
+
     // Add more questions here
     ];
+
 
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [correctAnswers, setCorrectAnswers] = useState(0);
     const [gameCompleted, setGameCompleted] = useState(false);
     const [disabledOptions, setDisabledOptions] = useState([]);
+
+    
 
 
     const handleAnswerPress = (answer, playerId) => {
@@ -97,6 +116,8 @@ export default function PlayScreen({ route }) {
     }, []);
 
   useEffect(() => {
+
+
     const fetchPlayerIds = async () => {
       try {
         const roomRef = doc(FIREBASE_DB, 'game_rooms', roomId);
@@ -152,6 +173,25 @@ export default function PlayScreen({ route }) {
           console.log("Cannot add points for this player.");
           return;
         }
+
+        // Check if the user exists in the collection
+        const userRef = doc(FIREBASE_DB, 'users', playerId);
+        const userSnapshot = await getDoc(userRef);
+        const userData = userSnapshot.data();
+
+        if (userData) {
+            // Update user's score
+            await updateDoc(userRef, {
+                score: userData.score + 5 // Increment the score by 5
+            });
+        } else {
+            // Create a new document for the user
+            await setDoc(userRef, {
+                playerId: playerId,
+                score: 5 // Initialize score to 5
+            });
+        }
+
   
         console.log(`${playerId} added 5 points. Total points: ${updatedPoints}`);
       }
@@ -167,46 +207,10 @@ export default function PlayScreen({ route }) {
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  const savePoints = async () => {
-    try {
-        // Check if player IDs are valid
-        if (player1Id && player2Id) {
-            const userDoc1 = doc(collection(FIREBASE_DB, 'userdata'), player1Id); // Reference to player 1's document
-            const userDoc2 = doc(collection(FIREBASE_DB, 'userdata'), player2Id); // Reference to player 2's document
-
-            await updateDoc(userDoc1, {
-                userscore: increment(player1Points), // Increment player 1's score
-                userGoldPoints: increment(player1Points / 5) // Calculate and store gold points for player 1
-            });
-
-            await updateDoc(userDoc2, {
-                userscore: increment(player2Points), // Increment player 2's score
-                userGoldPoints: increment(player2Points / 5) // Calculate and store gold points for player 2
-            });
-
-            console.log("Scores updated successfully!");
-        } else {
-            console.error("Invalid player IDs.");
-        }
-    } catch (error) {
-        console.error("Error updating scores: ", error);
-    }
-};
-
+ 
 
   if (gameCompleted) {
-    // save points to firestore userdata collection
-    
-    // Call savePoints() only if player1Id and player2Id are valid
-    if (player1Id && player2Id) {
-      savePoints();
-    } else {
-      console.error("Invalid player IDs.");
-    }
 
-
-
-    
 
     return (
         <View style={styles.container}>
@@ -230,24 +234,20 @@ export default function PlayScreen({ route }) {
         <Text style={styles.palyerProfiele}>J</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.timercontainer}>
-     
-
-      </View>
+      
+      
       <View style={styles.middelcontainer}>
-        {/* <Text>My ID is: {playerId}</Text> */}
-        {/* <Text>Player 1: {player1Id} - Points: {player1Points}</Text>
-        {playerId === player1Id && (
-          <Button title="Gain 5 points" onPress={() => handleIncrementPoints(player1Id)} />
-        )}
-        <Text>Player 2: {player2Id} - Points: {player2Points}</Text>
-        {playerId === player2Id && (
-          <Button title="Gain 5 points" onPress={() => handleIncrementPoints(player2Id)} />
-        )} */}
+       
 
-
-            <View style={styles.answcontainer}>
+            <View style ={{ height:'50%', width:'100%', alignItems:'center', justifyContent:'center', marginTop:'5%'}}> 
             <Text style={styles.questionLabel}>{currentQuestion.prompt}</Text>
+            <Image source={currentQuestion.code} style={{height: '80%', resizeMode: 'contain'} } />
+
+            </View>
+            <View style={styles.answcontainer}>
+              
+                
+              
            
                 {playerId === player1Id && (
                     currentQuestion.options.map((answer, index) => (
@@ -295,8 +295,8 @@ export default function PlayScreen({ route }) {
                                 justifyContent: 'center',
                                 borderTopRightRadius: 45,
                                 borderBottomRightRadius: 45,
-                                marginLeft:0 }}>
-        <MaterialIcons name="timer" size={40} color="white" />
+                                marginLeft:0 }} >
+        <MaterialIcons name="timer" size={40} color="white" freezeEnemy/>
       </TouchableOpacity>
 
       <TouchableOpacity style={{width: 75,
@@ -306,8 +306,8 @@ export default function PlayScreen({ route }) {
                                 justifyContent: 'center',
                                 borderTopLeftRadius: 45,
                                 borderBottomLeftRadius: 45,
-                                marginRight:0 }}>
-      <Entypo name="magnifying-glass" size={40} color="white" />
+                                marginRight:0 }} onPress={() => alert('the right answer: ', currentQuestion.answer)}>
+      <Entypo name="magnifying-glass" size={40} color="white"/>
       </TouchableOpacity>
 
 
@@ -320,15 +320,26 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#56C5DB',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
   },
+
+  questionLabel: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    padding: 20,
+    width: '100%',
+    textAlign: 'center',
+  },
   topScoreboard: {
+    marginTop: 25,
     marginStart: 0,
     width: '100%',
+    height: '15%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -341,7 +352,7 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 50,
     height: 50,
-    backgroundColor: '#e5383b',
+    backgroundColor: 'blue',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
@@ -365,16 +376,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10
   },
-  timercontainer: {
-    marginTop: -20,
-    width: '25%',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
-  },
+  
   timer: {
     fontSize: 14,
     fontWeight: 'bold',
@@ -384,7 +386,7 @@ const styles = StyleSheet.create({
   middelcontainer: {
     marginTop: 0,
     width: '100%',
-    height: '75%',
+    height: '70%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
@@ -393,15 +395,20 @@ const styles = StyleSheet.create({
   answcontainer: {
     marginTop: 10,
     width: "90%",
+    height: "50%",
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    
 },
 answbutton: {
+    width: "45%",
     borderRadius: 10,
     padding: 10,
     elevation: 2,
     margin: 5,
+    marginTop: 15,
+
    
 },
 answbuttonSec: {
@@ -424,7 +431,7 @@ answtextstyle: {
 bottomcontainer:{
   flexDirection: 'row',
   justifyContent: 'space-between',
-  
+  height: '15%',
   width: '100%',
  
 },
@@ -446,6 +453,10 @@ helpButton: {
   padding: 10,
   fontWeight: 'bold',
   textAlign: 'center',
-}
+
+
+},
+
+
 
 })
