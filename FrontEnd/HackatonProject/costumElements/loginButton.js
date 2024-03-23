@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
-    borderRadius: 55,
+    borderRadius: 15,
     width: '85%',
     marginTop: 20,
     shadowColor: '#000',

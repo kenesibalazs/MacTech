@@ -43,22 +43,22 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.container}>
             <Text style={styles.titleLabel}>Welcome</Text>
             <TextInput
-                placeholder='Username'
+                placeholder='Email'
                 style={styles.textField}
-                placeholderTextColor='white'
+                placeholderTextColor='#5A5A66'
                 onChangeText={text => setUsername(text)}
                 value={username}
             />
             <TextInput
                 placeholder='Password'
                 style={styles.textField}
-                placeholderTextColor='white'
+                placeholderTextColor='#5A5A66'
                 onChangeText={text => setPassword(text)}
                 secureTextEntry={true}
                 value={password}
             />
-            <LoginButton title='Login' onPress={signIn} backgroundColor='#48cae4' />
-            <LoginButton title='Create Account' onPress={signUp} backgroundColor='#0096c7' />
+            <LoginButton title='Login' onPress={signIn} backgroundColor='#0FA3B1' />
+            <LoginButton title='Create Account' onPress={signUp} backgroundColor='#2292A4' />
         </View>
     );
 }
@@ -66,7 +66,7 @@ export default function LoginScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#38a3a5',
+        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -74,13 +74,13 @@ const styles = StyleSheet.create({
         width: '80%',
         padding: 10,
         borderBottomWidth: 1,
-        borderBottomColor: 'white',
+        borderBottomColor: '#5A5A66',
         margin: 20,
     },
     titleLabel: {
         fontSize: 40,
         fontWeight: 'bold',
         marginBottom: 50,
-        color: '#caf0f8'
+        color: '#5A5A66'
     }
 });

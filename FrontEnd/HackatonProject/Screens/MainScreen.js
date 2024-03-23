@@ -7,6 +7,8 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import LeaderboardScreen from './LeaderBoardScreen';
+import { Feather } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 
 export default function MainScreen({ route }) {
   const navigation = useNavigation();
@@ -157,16 +159,16 @@ export default function MainScreen({ route }) {
       
       
       <View style={styles.bottomNavBar}>
-        <TouchableOpacity style={styles.navBarButton}>
-          <AntDesign name="user" size={32} color="black" />
-          <Text style={styles.navBarButtonText}>Avatar</Text>
+        <TouchableOpacity style={styles.navBarButton} onPress={() => navigation.navigate('HistoryScreen')}>
+          <AntDesign name="barschart" size={32} color="white" />
+          <Text style={styles.navBarButtonText}>History</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navBarButton} onPress={() => navigation.navigate('LeaderboardScreen')}>
-          <MaterialCommunityIcons name="podium-gold" size={32} color="black" />
+        <MaterialIcons name="leaderboard" size={32} color="white" />
           <Text style={styles.navBarButtonText}>Leaderboard</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.navBarButton} onPress={() => navigation.navigate('SettingsScreen')}>
-          <FontAwesome5 name="cogs" size={32} color="black" />
+        <Feather name="settings" size={32} color="white" />
           <Text style={styles.navBarButtonText}>Settings</Text>
         </TouchableOpacity>
       </View>
@@ -180,7 +182,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#38a3a5',
+    backgroundColor: '#06BEE1',
     width: '100%',
   },
   title: {
@@ -249,16 +251,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     bottom: 0,
+    paddingBottom: 20,
     width: '100%',
-    backgroundColor: '#ffffff',
+    backgroundColor: '#1768AC',
     justifyContent: 'space-around',
     paddingVertical: 10,
-    borderTopWidth: 1
+    
   },
   navBarButton: {
     alignItems: 'center',
+    marginBottom: 10,
   },
   navBarButtonText: {
+    paddingTop: 5,
+    color:'#fff',
     fontSize: 12,
   },
 
@@ -273,8 +279,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    borderBottomWidth: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+    backgroundColor: '#1768AC',
 
   },
 

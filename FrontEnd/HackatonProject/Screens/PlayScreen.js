@@ -299,7 +299,7 @@ export default function PlayScreen({ route }) {
                                   borderTopRightRadius: 45,
                                   borderBottomRightRadius: 45,
                                   marginLeft:0 }} >
-          <MaterialIcons name="timer" size={40} color="white" />
+          <MaterialIcons name="timer" size={40} color="white" onPress={() => alert('CSINALD MEG HOGY LEFASASSZA AZ ELLENFELET')} />
         </TouchableOpacity>
 
         <TouchableOpacity style={{width: 75,
@@ -309,7 +309,7 @@ export default function PlayScreen({ route }) {
                                   justifyContent: 'center',
                                   borderTopLeftRadius: 45,
                                   borderBottomLeftRadius: 45,
-                                  marginRight:0 }} onPress={() => alert('the right answer: ', currentQuestion.answer)}>
+                                  marginRight:0 }} onPress={() => alert('CSINALD MEG HOGY ADHON EGY HINTET ')}>
         <Entypo name="magnifying-glass" size={40} color="white"/>
         </TouchableOpacity>
 
