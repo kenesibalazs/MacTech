@@ -78,6 +78,9 @@ export default function MainScreen({ route }) {
     <View style={styles.container}>
       <Text style={styles.title}>Main Screen</Text>
       <Text>Your Player ID: {playerId}</Text>
+      <TouchableOpacity style={styles.gameButtonContainer} onPress={() => createGameRoom()}>
+        <Text style={styles.gameButtonsText}>Multi</Text>
+      </TouchableOpacity>
       <Button title="Create Game Room" onPress={() => createGameRoom()} />
       <Modal
         animationType="slide"
@@ -151,5 +154,31 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+  },
+
+  gameButtonContainer: {
+    alignItems: 'center',
+    backgroundColor: '#FCFCFD',
+    borderRadius: 4,
+    borderWidth: 0,
+    shadowColor: 'rgba(45, 35, 66, 0.4)',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 4,
+    elevation: 3,
+    borderColor: '#D6D6E7',
+    marginVertical: 10,
+    marginHorizontal: 20,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+
+  gameButtonsText:{
+    color: '#36395A',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
