@@ -70,7 +70,7 @@ export default function PlayScreen({ route }) {
 
     
 
-
+    
     const handleAnswerPress = (answer, playerId) => {
         if (answer === questions[currentQuestionIndex].correctAnswer) {
             setCorrectAnswers(prevCorrectAnswers => prevCorrectAnswers + 1);
@@ -149,6 +149,8 @@ export default function PlayScreen({ route }) {
     return () => unsubscribe();
   }, [roomId]);
 
+  
+
   const handleIncrementPoints = async (playerId) => {
     try {
       const roomRef = doc(FIREBASE_DB, 'game_rooms', roomId);
@@ -202,6 +204,7 @@ export default function PlayScreen({ route }) {
     }
   };
  
+  
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -224,6 +227,7 @@ export default function PlayScreen({ route }) {
         </View>
     );
 }
+
 
   return (
     <View style={styles.container}>
@@ -299,7 +303,7 @@ export default function PlayScreen({ route }) {
                                   borderTopRightRadius: 45,
                                   borderBottomRightRadius: 45,
                                   marginLeft:0 }} >
-          <MaterialIcons name="timer" size={40} color="white" onPress={() => alert('CSINALD MEG HOGY LEFASASSZA AZ ELLENFELET')} />
+          <MaterialIcons name="timer" size={40} color="white" onPress={() => alert('CSINALD MEG HOGY ADHON EGY HINTET ')  } />
         </TouchableOpacity>
 
         <TouchableOpacity style={{width: 75,
@@ -461,7 +465,5 @@ helpButton: {
 
 
 },
-
-
 
 })
