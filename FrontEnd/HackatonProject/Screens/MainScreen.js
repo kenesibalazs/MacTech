@@ -78,10 +78,19 @@ export default function MainScreen({ route }) {
     <View style={styles.container}>
       <Text style={styles.title}>Main Screen</Text>
       <Text>Your Player ID: {playerId}</Text>
-      <TouchableOpacity style={styles.gameButtonContainer} onPress={() => createGameRoom()}>
-        <Text style={styles.gameButtonsText}>Multi</Text>
+      <TouchableOpacity style={styles.gameButtonContainer}>
+        <Text style={styles.gameButtonsText}>Solo</Text>
       </TouchableOpacity>
-      <Button title="Create Game Room" onPress={() => createGameRoom()} />
+
+
+      <TouchableOpacity style={styles.gameButtonContainer} onPress={() => createGameRoom()}>
+        <Text style={styles.gameButtonsText}>Create Game</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.gameButtonContainer} onPress={() => setModalVisible(true)}>
+        <Text style={styles.gameButtonsText}>Join Game</Text>
+      </TouchableOpacity>
+      
+      {/* <Button title="Create Game Room" onPress={() => createGameRoom()} /> */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -107,7 +116,9 @@ export default function MainScreen({ route }) {
           </View>
         </View>
       </Modal>
-      <Button title="Join Game Room" onPress={() => setModalVisible(true)} />
+      {/* <Button title="Join Game Room" onPress={() => setModalVisible(true)} /> */}
+      
+
     </View>
   );
 }
@@ -157,6 +168,7 @@ const styles = StyleSheet.create({
   },
 
   gameButtonContainer: {
+    width: '80%',
     alignItems: 'center',
     backgroundColor: '#FCFCFD',
     borderRadius: 4,

@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Button, TouchableOpacity, Pressable, Modal, Alert } from 'react-native';
-import { doc, getDoc, updateDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, onSnapshot, collection } from 'firebase/firestore';
 import { FIREBASE_DB } from '../FirebaseConfig';
 import { DeviceMotion } from 'expo-sensors';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import MainScreen from './MainScreen';
+import CountDown from 'react-native-countdown-component';
 
 
 export default function PlayScreen({ route }) {
@@ -48,6 +51,7 @@ export default function PlayScreen({ route }) {
     const [gameCompleted, setGameCompleted] = useState(false);
     const [disabledOptions, setDisabledOptions] = useState([]);
 
+
     const handleAnswerPress = (answer, playerId) => {
         if (answer === questions[currentQuestionIndex].correctAnswer) {
             setCorrectAnswers(prevCorrectAnswers => prevCorrectAnswers + 1);
@@ -77,9 +81,9 @@ export default function PlayScreen({ route }) {
     useEffect(() => {
         const subscription = DeviceMotion.addListener((motion) => {
         if (motion.acceleration.x > 0.99 || motion.acceleration.x < -0.99 || motion.acceleration.y > 0.99 || motion.acceleration.y < -0.99) {
-            console.log("User ID:", playerId);
-            console.log("X:", motion.acceleration.x);
-            console.log("Y:", motion.acceleration.y);
+            // console.log("User ID:", playerId);
+            // console.log("X:", motion.acceleration.x);
+            // console.log("Y:", motion.acceleration.y);
         }
         setMotionData({
             x: motion.acceleration.x,
@@ -162,7 +166,48 @@ export default function PlayScreen({ route }) {
     const remainingSeconds = seconds % 60;
     return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
+
+  const savePoints = async () => {
+    try {
+        // Check if player IDs are valid
+        if (player1Id && player2Id) {
+            const userDoc1 = doc(collection(FIREBASE_DB, 'userdata'), player1Id); // Reference to player 1's document
+            const userDoc2 = doc(collection(FIREBASE_DB, 'userdata'), player2Id); // Reference to player 2's document
+
+            await updateDoc(userDoc1, {
+                userscore: increment(player1Points), // Increment player 1's score
+                userGoldPoints: increment(player1Points / 5) // Calculate and store gold points for player 1
+            });
+
+            await updateDoc(userDoc2, {
+                userscore: increment(player2Points), // Increment player 2's score
+                userGoldPoints: increment(player2Points / 5) // Calculate and store gold points for player 2
+            });
+
+            console.log("Scores updated successfully!");
+        } else {
+            console.error("Invalid player IDs.");
+        }
+    } catch (error) {
+        console.error("Error updating scores: ", error);
+    }
+};
+
+
   if (gameCompleted) {
+    // save points to firestore userdata collection
+    
+    // Call savePoints() only if player1Id and player2Id are valid
+    if (player1Id && player2Id) {
+      savePoints();
+    } else {
+      console.error("Invalid player IDs.");
+    }
+
+
+
+    
+
     return (
         <View style={styles.container}>
             <Text>Game Over!</Text>
@@ -182,14 +227,15 @@ export default function PlayScreen({ route }) {
         </TouchableOpacity>
         <Text style={styles.liveScore}>{player1Points} - {player2Points}</Text>
         <TouchableOpacity style={styles.playerProfileContainer}>
-          <Text style={styles.palyerProfiele}>J</Text>
+        <Text style={styles.palyerProfiele}>J</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.timercontainer}>
-      {/* <Text style={styles.timer}>{formatTime(timer)}</Text> */}
+     
+
       </View>
       <View style={styles.middelcontainer}>
-        <Text>My ID is: {playerId}</Text>
+        {/* <Text>My ID is: {playerId}</Text> */}
         {/* <Text>Player 1: {player1Id} - Points: {player1Points}</Text>
         {playerId === player1Id && (
           <Button title="Gain 5 points" onPress={() => handleIncrementPoints(player1Id)} />
@@ -201,6 +247,8 @@ export default function PlayScreen({ route }) {
 
 
             <View style={styles.answcontainer}>
+            <Text style={styles.questionLabel}>{currentQuestion.prompt}</Text>
+           
                 {playerId === player1Id && (
                     currentQuestion.options.map((answer, index) => (
                         <Pressable
@@ -235,6 +283,33 @@ export default function PlayScreen({ route }) {
                     ))
                 )}
             </View>
+
+      </View>
+
+
+      <View style={styles.bottomcontainer}>
+      <TouchableOpacity style={{width: 75,
+                                height: 75,
+                                backgroundColor: '#4361ee',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderTopRightRadius: 45,
+                                borderBottomRightRadius: 45,
+                                marginLeft:0 }}>
+        <MaterialIcons name="timer" size={40} color="white" />
+      </TouchableOpacity>
+
+      <TouchableOpacity style={{width: 75,
+                                height: 75,
+                                backgroundColor: '#4361ee',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderTopLeftRadius: 45,
+                                borderBottomLeftRadius: 45,
+                                marginRight:0 }}>
+      <Entypo name="magnifying-glass" size={40} color="white" />
+      </TouchableOpacity>
+
 
       </View>
     </View>
@@ -344,5 +419,33 @@ answtextstyle: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center"
+},
+
+bottomcontainer:{
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  
+  width: '100%',
+ 
+},
+
+helpButtonContainer: {
+  
+  width: 75,
+  height: 75,
+  backgroundColor: '#e5383b',
+  alignItems: 'center',
+  justifyContent: 'center',
+
+
+},
+
+helpButton: {
+  fontSize: 50,
+  color: 'white',
+  padding: 10,
+  fontWeight: 'bold',
+  textAlign: 'center',
 }
+
 })
