@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Modal, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { collection, getDocs, addDoc, serverTimestamp, query, where, onSnapshot, updateDoc, doc, getDoc } from 'firebase/firestore';
-import { FIREBASE_AUTH, FIREBASE_DB } from '../FirebaseConfig'; // Importing from the uppercase names
+import { collection, addDoc, onSnapshot, updateDoc, doc, getDoc } from 'firebase/firestore';
+import { FIREBASE_AUTH, FIREBASE_DB } from '../FirebaseConfig';
 
 export default function MainScreen({ route }) {
   const navigation = useNavigation();
   const [gameRooms, setGameRooms] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [playerId, setPlayerId] = useState('');
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(FIREBASE_DB, 'game_rooms'), snapshot => {
@@ -17,18 +18,24 @@ export default function MainScreen({ route }) {
       });
       setGameRooms(rooms);
     });
+    
+    const authUser = FIREBASE_AUTH.currentUser;
+    if (authUser) {
+      setPlayerId(authUser.uid);
+    }
+
     return () => unsubscribe();
   }, []);
 
   const createGameRoom = async () => {
     try {
-      const userId = FIREBASE_AUTH.currentUser.uid; // Accessing currentUser from uppercase name
+      const userId = FIREBASE_AUTH.currentUser.uid;
       const newRoomRef = await addDoc(collection(FIREBASE_DB, 'game_rooms'), {
         player1Id: userId,
         player2Id: null,
         gameStatus: "pending"
       });
-      navigation.navigate('PlayScreen', { roomId: newRoomRef.id });
+      navigation.navigate('PlayScreen', { roomId: newRoomRef.id, playerId: userId });
     } catch (error) {
       console.error("Error creating game room:", error);
     }
@@ -60,8 +67,7 @@ export default function MainScreen({ route }) {
 
       setModalVisible(false);
   
-      // Ensure that the navigation to PlayScreen occurs after the document update
-      navigation.navigate('PlayScreen', { roomId });
+      navigation.navigate('PlayScreen', { roomId, playerId: userId });
     } catch (error) {
       console.error("Error joining game room:", error);
     }
@@ -71,6 +77,7 @@ export default function MainScreen({ route }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Main Screen</Text>
+      <Text>Your Player ID: {playerId}</Text>
       <Button title="Create Game Room" onPress={() => createGameRoom()} />
       <Modal
         animationType="slide"
