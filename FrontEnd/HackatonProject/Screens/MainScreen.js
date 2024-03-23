@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, FlatList,Button } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, FlatList,Button , ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { collection, addDoc, onSnapshot, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { FIREBASE_AUTH, FIREBASE_DB } from '../FirebaseConfig';
@@ -102,15 +102,17 @@ export default function MainScreen({ route }) {
   };
 
   return (
+    <ImageBackground source={require('../assets/background.png')} style={{width: '100%', height: '100%'}}>
+    
     <View style={styles.container}>
 
       <View style={styles.userContainer}>
         <View style={styles.userDetails}>
-          <Text style={{fontSize: 20}}>🌟 {userGoldScore}</Text>
-          <Text>Score: {userScore}</Text>
+          <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold'}}>🌟 {userGoldScore}</Text>
+          <Text style={{fontSize: 16, color: 'white', fontWeight: 'bold'}}>Score: {userScore}</Text>
         </View>
         <View style={styles.userAvatar}>
-          <Text>{username}</Text>
+          <Text style={{fontSize: 16, color: 'white', fontWeight: 'bold'}}>{username}</Text>
           <View style={styles.profileCircle}>
             <Text style={styles.profileText}>{username.charAt(0).toUpperCase()}</Text>
           </View>
@@ -173,6 +175,8 @@ export default function MainScreen({ route }) {
         </TouchableOpacity>
       </View>
     </View>
+
+    </ImageBackground>
   );
   
 }
@@ -182,8 +186,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#06BEE1',
+    
     width: '100%',
+   
   },
   title: {
     fontSize: 24,
@@ -225,25 +230,22 @@ const styles = StyleSheet.create({
   gameButtonContainer: {
     width: '80%',
     alignItems: 'center',
-    backgroundColor: '#FCFCFD',
-    borderRadius: 4,
-    borderWidth: 0,
-    shadowColor: 'rgba(45, 35, 66, 0.4)',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    backgroundColor: 'rgba(0, 255, 136, 0.43)',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    shadowColor: 'rgba(31, 38, 135, 0.37)',
+    shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 1,
-    shadowRadius: 4,
-    elevation: 3,
-    borderColor: '#D6D6E7',
-    marginVertical: 10,
-    marginHorizontal: 20,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
+    shadowRadius: 32,
+    elevation: 5,
+    // Adjust margin if needed
+    margin: 10,
   },
   gameButtonsText:{
-    color: '#36395A',
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -279,12 +281,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    backgroundColor: '#1768AC',
+    backgroundColor: 'transparent',
 
   },
 
   userDetails : {
     flexDirection: 'column',
+
   },
 
   userAvatar: {
@@ -293,17 +296,23 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   profileCircle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'white',
+    width: 50,
+    height: 50,
+    borderRadius: 35,
+    
+    backgroundColor: '#8D7ADC',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
   },
   profileText: {
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#fff',
   },
 
   gameButtonsContainer:{

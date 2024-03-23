@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { useFonts } from 'expo-font';
 import LoginScreen from './Screens/LoginScreen';
 import MainScreen from './Screens/MainScreen';
 import BasicGameLevelOne from './Screens/basicGameLevelOne';
@@ -15,6 +15,14 @@ import HistoryScreen from './Screens/HistoryScreen';
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [fontLoaded] = useFonts({
+
+    CustomFonts : require('./assets/jetbrainsmono.ttf'),
+  });
+
+  if (!fontLoaded) {
+    return null;
+  }
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>

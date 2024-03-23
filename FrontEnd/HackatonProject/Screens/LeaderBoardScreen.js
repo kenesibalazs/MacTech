@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Modal, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Modal, FlatList ,ImageBackground} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { collection, query, orderBy, getDocs } from 'firebase/firestore';
 import { FIREBASE_DB } from '../FirebaseConfig';
@@ -39,11 +39,12 @@ export default function LeaderboardScreen() {
   };
 
   return (
+    <ImageBackground source={require('../assets/background.png')} style={{width: '100%', height: '100%'}}>
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Leaderboard</Text>
         <TouchableOpacity onPress={handleClose}>
-          <AntDesign name="close" size={24} color="black" />
+          <AntDesign name="close" size={30} color="white" />
         </TouchableOpacity>
       </View>
       <FlatList
@@ -58,6 +59,7 @@ export default function LeaderboardScreen() {
         keyExtractor={(item) => item.id}
       />
     </View>
+    </ImageBackground>
   );
 }
 
@@ -77,6 +79,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    color:'#fff'
   },
   userItem: {
     flexDirection: 'row',
@@ -89,18 +92,21 @@ const styles = StyleSheet.create({
   rank: {
     marginRight: 10,
     fontWeight: 'bold',
+    color:'#fff'
   },
   username: {
     flex: 1,
     marginRight: 10,
+    color:'#fff'
   },
   score: {
     fontWeight: 'bold',
+    color:'#fff'
   },
   playerId: {
-    color: 'black', // Default color for playerId
+    color: '#fff', 
   },
   currentUserId: {
-    color: 'red', // Color for current user's playerId
+    color: '#fff', // Color for current user's playerId
   },
 });
