@@ -182,13 +182,15 @@ export default function PlayScreen({ route }) {
         if (userData) {
             // Update user's score
             await updateDoc(userRef, {
-                score: userData.score + 5 // Increment the score by 5
+                score: userData.score + 5 ,// Increment the score by 5
+                goldScore: userData.goldScore + 1 
             });
         } else {
             // Create a new document for the user
             await setDoc(userRef, {
                 playerId: playerId,
-                score: 5 // Initialize score to 5
+                score: 5 ,// Initialize score to 5
+                goldScore:1
             });
         }
 
@@ -286,29 +288,32 @@ export default function PlayScreen({ route }) {
 
       </View>
 
+      
+        <View style={styles.bottomcontainer}>
+          
+        <TouchableOpacity style={{width: 75,
+                                  height: 75,
+                                  backgroundColor: '#4361ee',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  borderTopRightRadius: 45,
+                                  borderBottomRightRadius: 45,
+                                  marginLeft:0 }} >
+          <MaterialIcons name="timer" size={40} color="white" />
+        </TouchableOpacity>
 
-      <View style={styles.bottomcontainer}>
-      <TouchableOpacity style={{width: 75,
-                                height: 75,
-                                backgroundColor: '#4361ee',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderTopRightRadius: 45,
-                                borderBottomRightRadius: 45,
-                                marginLeft:0 }} >
-        <MaterialIcons name="timer" size={40} color="white" freezeEnemy/>
-      </TouchableOpacity>
+        <TouchableOpacity style={{width: 75,
+                                  height: 75,
+                                  backgroundColor: '#4361ee',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  borderTopLeftRadius: 45,
+                                  borderBottomLeftRadius: 45,
+                                  marginRight:0 }} onPress={() => alert('the right answer: ', currentQuestion.answer)}>
+        <Entypo name="magnifying-glass" size={40} color="white"/>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={{width: 75,
-                                height: 75,
-                                backgroundColor: '#4361ee',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderTopLeftRadius: 45,
-                                borderBottomLeftRadius: 45,
-                                marginRight:0 }} onPress={() => alert('the right answer: ', currentQuestion.answer)}>
-      <Entypo name="magnifying-glass" size={40} color="white"/>
-      </TouchableOpacity>
+      
 
 
       </View>

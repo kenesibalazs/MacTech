@@ -9,6 +9,7 @@ import BasicGameLevelOne from './Screens/basicGameLevelOne';
 import GameScreen from './Screens/MainScreen';
 import PlayScreen from './Screens/PlayScreen'; // Import PlayScreen component
 import LeaderboardScreen from './Screens/LeaderBoardScreen';
+import SettingsScreen from './Screens/SettingsScreen';
 
 const Stack = createStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
         {/* Ensure that PlayScreen is included within the component prop of a Screen */}
         <Stack.Screen name="PlayScreen" component={PlayScreen} />
         <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
