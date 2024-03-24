@@ -120,7 +120,8 @@ export default function MainScreen({ route }) {
       </View>
   
       <View style={styles.gameButtonsContainer}>
-      <TouchableOpacity style={styles.gameButtonContainer}>
+      <Text style={{fontSize: 20, color: 'white', fontWeight: 'bold', marginBottom: 20}}>Choose your game mode</Text>
+      <TouchableOpacity style={styles.gameButtonContainer } onPress={() => navigation.navigate('SoloScreen')}>
         <Text style={styles.gameButtonsText}>Solo</Text>
       </TouchableOpacity>
   
@@ -161,6 +162,7 @@ export default function MainScreen({ route }) {
       
       
       <View style={styles.bottomNavBar}>
+        
         <TouchableOpacity style={styles.navBarButton} onPress={() => navigation.navigate('HistoryScreen')}>
           <AntDesign name="barschart" size={32} color="white" />
           <Text style={styles.navBarButtonText}>History</Text>
@@ -317,7 +319,8 @@ const styles = StyleSheet.create({
 
   gameButtonsContainer:{
     width: '100%',
-    height: '80%',
+    height: '70%',
+    margin: 40,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

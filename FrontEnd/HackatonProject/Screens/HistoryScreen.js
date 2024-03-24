@@ -32,7 +32,7 @@ export default function HistoryScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
    
-        <Text style={styles.title}>Game Rooms</Text>
+        <Text style={styles.title}>Game History</Text>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <AntDesign name="close" size={30} color="white" style={{ marginTop: 20 }} />
         </TouchableOpacity>

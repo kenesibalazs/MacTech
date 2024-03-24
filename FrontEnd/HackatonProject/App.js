@@ -11,6 +11,7 @@ import PlayScreen from './Screens/PlayScreen'; // Import PlayScreen component
 import LeaderboardScreen from './Screens/LeaderBoardScreen';
 import SettingsScreen from './Screens/SettingsScreen';
 import HistoryScreen from './Screens/HistoryScreen';
+import SoloScreen from './Screens/SoloScreen';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,8 @@ export default function App() {
         <Stack.Screen name="LeaderboardScreen" component={LeaderboardScreen} />
         <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
         <Stack.Screen name="HistoryScreen" component={HistoryScreen} />
+        <Stack.Screen name="SoloScreen" component={SoloScreen} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
